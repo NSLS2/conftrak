@@ -1,7 +1,6 @@
 from __future__ import absolute_import
 from tornado import gen
 import tornado.web
-import os
 import pymongo
 import jsonschema
 import ujson
@@ -9,7 +8,6 @@ from . import utils
 from jsonschema.exceptions import ValidationError, SchemaError
 from ..exceptions import ConfTrakException
 
-HACK = True
 
 def db_connect(database, mongo_host, mongo_port):
     """Helper function to deal with stateful connections to MongoDB
@@ -30,30 +28,25 @@ def db_connect(database, mongo_host, mongo_port):
     multiple clients and makes no difference for a single client compared
     to pymongo
     """
-    
-    # TODO: Temporarily hard code mongo client.
-    if HACK:
-        client = pymongo.MongoClient(f"mongodb://fmx_write:{os.environ['MONGO_PASSWORD_FMX']}@mongo1.nsls2.bnl.gov,mongo2.nsls2.bnl.gov,mongo3.nsls2.bnl.gov/?authSource=admin")
-        database = client['fmx-conftrak']
-    else:
-        try:
-            client = pymongo.MongoClient(host=mongo_host, port=mongo_port)
-            client.list_database_names()  # check if the server is really okay.
-        except (pymongo.errors.ConnectionFailure,
-                pymongo.errors.ServerSelectionTimeoutError):
-            raise ConfTrakException("Unable to connect to MongoDB server...")
-        database = client[database]
+    try:
+        client = pymongo.MongoClient(host=mongo_host, port=mongo_port)
+        client.list_database_names()  # check if the server is really okay.
+    except (pymongo.errors.ConnectionFailure,
+            pymongo.errors.ServerSelectionTimeoutError):
+        raise ConfTrakException("Unable to connect to MongoDB server...")
 
-        database.configuration.create_index([('uid', pymongo.DESCENDING)],
-                                            unique=True, background=False)
-        database.configuration.create_index([('time', pymongo.DESCENDING)],
-                                            unique=False, background=True)
-        database.configuration.create_index([('beamline_id', pymongo.DESCENDING)],
-                                            unique=False, background=True,
-                                            sparse=True)
-        database.configuration.create_index([('key', pymongo.DESCENDING)],
-                                            unique=False, background=True,
-                                            sparse=True)
+    database = client[database]
+
+    #database.configuration.create_index([('uid', pymongo.DESCENDING)],
+    #                                    unique=True, background=False)
+    #database.configuration.create_index([('time', pymongo.DESCENDING)],
+    #                                    unique=False, background=True)
+    #database.configuration.create_index([('beamline_id', pymongo.DESCENDING)],
+    #                                    unique=False, background=True,
+    #                                    sparse=True)
+    #database.configuration.create_index([('key', pymongo.DESCENDING)],
+    #                                    unique=False, background=True,
+    #                                    sparse=True)
 
     return database
 

@@ -51,14 +51,14 @@ def conftrak_client():
     return c
 
 @pytest.fixture(scope="function")
-def conftrak_client():
+def conftrak_client_ssl():
     c = ConfigurationReference(
         host=testing_config["mongo_host"], use_ssl=True
     )
     return c
 
 @pytest.fixture(scope="function")
-def conftrak_client():
+def conftrak_client_invalid():
     c = ConfigurationReference(
         host=testing_config["mongo_host"], use_ssl=False
     )

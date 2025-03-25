@@ -25,6 +25,7 @@ def test_configuration_constructor(conftrak_server):
     c2 = ConfigurationReference()
 
 
+@pytest.fixture()
 def test_connection_switch(conftrak_server, conftrak_client):
     conftrak_client.host = "blah"
     pytest.raises(RequestException, conftrak_client.create, "test_beamline")
@@ -32,6 +33,7 @@ def test_connection_switch(conftrak_server, conftrak_client):
     conftrak_client.create(beamline_id="lix")
 
 
+@pytest.fixture()
 def test_configuration_create(conftrak_server, conftrak_client):
     c1 = conftrak_client.create(beamline_id="test")
     c2 = conftrak_client.create(beamline_id="test", uid=str(uuid.uuid4()))
@@ -39,6 +41,7 @@ def test_configuration_create(conftrak_server, conftrak_client):
     c3 = conftrak_client.create(beamline_id="test", **c_kwargs)
 
 
+@pytest.fixture()
 def test_configuration_find(conftrak_server, conftrak_client):
     config_data = dict(
         beamline_id="test_bl",
@@ -54,6 +57,7 @@ def test_configuration_find(conftrak_server, conftrak_client):
     assert c_ret == Document("Configuration", config_data)
 
 
+@pytest.fixture()
 def test_configuration_update(conftrak_server, conftrak_client):
     config_data = dict(
         beamline_id="test_bl",
@@ -71,6 +75,7 @@ def test_configuration_update(conftrak_server, conftrak_client):
     assert updated_conf["key"] == "updated_key"
 
 
+@pytest.fixture()
 def test_configuration_delete(conftrak_server, conftrak_client):
     config_data = dict(
         beamline_id="test_bl",
@@ -89,6 +94,7 @@ def test_configuration_delete(conftrak_server, conftrak_client):
         deleted = next(conftrak_client.find(uid=config_data["uid"]))
 
 
+@pytest.fixture()
 def test_configuration_find_all(conftrak_server, conftrak_client):
     config_data = dict(
         beamline_id="test_bl",
@@ -107,6 +113,7 @@ def test_configuration_find_all(conftrak_server, conftrak_client):
     assert deleted is not None
 
 
+@pytest.fixture()
 def test_configuration_schema(conftrak_server, conftrak_client):
     config_data = dict(
         beamline_id="test_bl",

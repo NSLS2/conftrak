@@ -15,6 +15,7 @@ testing_config = {
     "mongo_host": "localhost",
     "database": "conftrak_test" + str(uuid.uuid4()),
     "service_port": 7771,
+    "use_ssl": False,
     "tzone": "US/Eastern",
     "log_file_prefix": "",
 }
@@ -49,6 +50,19 @@ def conftrak_client():
     )
     return c
 
+@pytest.fixture(scope="function")
+def conftrak_client():
+    c = ConfigurationReference(
+        host=testing_config["mongo_host"], use_ssl=True
+    )
+    return c
+
+@pytest.fixture(scope="function")
+def conftrak_client():
+    c = ConfigurationReference(
+        host=testing_config["mongo_host"], use_ssl=False
+    )
+    return c
 
 @pytest.fixture(scope="session")
 def tornado_client():

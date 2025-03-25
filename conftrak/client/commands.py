@@ -28,6 +28,8 @@ class ConfigurationReference(object):
     @property
     def _server_path(self):
         """URL to the ConfTrak server"""
+        if self.use_ssl:  # ignore port if using SSL
+            return f"https://{self.host}/"
         return "http://{}:{}/".format(self.host, self.port)
 
     @property

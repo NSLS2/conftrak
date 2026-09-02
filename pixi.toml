@@ -1,0 +1,23 @@
+[workspace]
+authors = ["vshekar1 <vshekar1@bnl.gov>"]
+channels = ["conda-forge"]
+name = "conftrak"
+platforms = ["linux-64"]
+version = "0.1.0"
+
+[tasks]
+start = "python -m conftrak.startup"
+
+[dependencies]
+python = "3.11.*"
+doct = ">=1.1.0,<2"
+jsonschema = ">=4.26.0,<5"
+pymongo = ">=4.17.0,<5"
+pyyaml = ">=6.0.3,<7"
+requests = ">=2.34.2,<3"
+tornado = ">=6.5.8,<7"
+ujson = ">=5.13.0,<6"
+mock = ">=5.2.0,<6"
+mongomock = ">=4.3.0,<5"
+pytest = ">=9.1.1,<10"
+setuptools = ">=70,<81"

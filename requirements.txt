@@ -5,3 +5,4 @@ pyyaml
 requests
 tornado
 ujson
+setuptools<81

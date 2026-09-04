@@ -8,7 +8,7 @@ from .utils import _get, _post, _put, _delete
 class ConfigurationReference(object):
     """Reference implementation of generic configuration manager"""
 
-    def __init__(self, host=conf.conn_config["host"], port=conf.conn_config["port"]):
+    def __init__(self, host=conf.conn_config["host"], port=conf.conn_config["port"], use_ssl=conf.conn_config["use_ssl"]):
         """Constructor
 
         Parameters
@@ -17,14 +17,19 @@ class ConfigurationReference(object):
             Machine name/address for ConfTrak server
         port: int, optional
             Port ConfTrak server is initiated on
+        use_ssl: boolean, optional
+            Use SSL
 
         """
         self.host = host
         self.port = port
+        self.use_ssl = use_ssl
 
     @property
     def _server_path(self):
         """URL to the ConfTrak server"""
+        if self.use_ssl:  # ignore port if using SSL
+            return f"https://{self.host}/"
         return "http://{}:{}/".format(self.host, self.port)
 
     @property

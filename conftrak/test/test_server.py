@@ -1,3 +1,4 @@
+import pytest
 import sys
 import uuid
 import ujson
@@ -23,6 +24,7 @@ def test_parse_configuration():
         assert config["service_port"] == 7771
 
 
+@pytest.fixture()
 def test_configuration_post(conftrak_server, tornado_client):
     print(f"base_url={base_url}")
     payload = dict(
@@ -75,6 +77,7 @@ def test_configuration_post(conftrak_server, tornado_client):
     assert response.code == 500
 
 
+@pytest.fixture()
 def test_configuration_get(conftrak_server, tornado_client):
     # Insert the test data
     payload_insert = dict(
@@ -118,6 +121,7 @@ def test_configuration_get(conftrak_server, tornado_client):
     assert response.code == 500
 
 
+@pytest.fixture()
 def test_configuration_put(conftrak_server, tornado_client):
     # Insert the test data
     payload_insert = dict(
@@ -166,6 +170,7 @@ def test_configuration_put(conftrak_server, tornado_client):
     assert response.code == 500
 
 
+@pytest.fixture()
 def test_configuration_delete(conftrak_server, tornado_client):
     payload_insert = dict(
         beamline_id="test_bl",
@@ -210,6 +215,7 @@ def test_configuration_delete(conftrak_server, tornado_client):
     assert response.code == 500
 
 
+@pytest.fixture()
 def test_schema_get(conftrak_server, tornado_client):
     real_url = "http://localhost:7771"
     url = "{}/{}".format(real_url, "schema")
@@ -219,6 +225,7 @@ def test_schema_get(conftrak_server, tornado_client):
     assert response.code == 200
 
 
+@pytest.fixture()
 def test_schema_put(conftrak_server, tornado_client):
     url = "{}/{}".format(base_url, "schema")
     body = "configuration"
@@ -226,6 +233,7 @@ def test_schema_put(conftrak_server, tornado_client):
     assert response.code == 405
 
 
+@pytest.fixture()
 def test_schema_post(conftrak_server, tornado_client):
     url = "{}/{}".format(base_url, "schema")
     body = "configuration"
